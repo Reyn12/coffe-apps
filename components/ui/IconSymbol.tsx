@@ -10,9 +10,14 @@ const MAPPING = {
   // See MaterialIcons here: https://icons.expo.fyi
   // See SF Symbols in the SF Symbols app on Mac.
   'house.fill': 'home',
-  'paperplane.fill': 'send',
+  'heart.fill': 'favorite',
+  'bag.fill': 'shopping-bag',
+  'person.fill': 'person',
+  'magnifyingglass': 'search',
+  'line.3.horizontal.decrease': 'filter-list',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'star.fill': 'star',  // Menambahkan mapping untuk bintang
 } as Partial<
   Record<
     import('expo-symbols').SymbolViewProps['name'],
