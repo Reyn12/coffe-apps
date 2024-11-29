@@ -9,7 +9,7 @@ interface CoffeeCardProps {
 
 export function CoffeeCard({ coffee, onPress }: CoffeeCardProps) {
   return (
-    <View style={styles.coffeeCard}>
+    <TouchableOpacity style={styles.coffeeCard} onPress={onPress}>
       <View style={styles.imageContainer}>
         <Image 
           source={coffee.image}
@@ -26,12 +26,12 @@ export function CoffeeCard({ coffee, onPress }: CoffeeCardProps) {
         <Text style={styles.coffeeDesc}>{coffee.description}</Text>
         <View style={styles.coffeeBottom}>
           <Text style={styles.coffeePrice}>$ {coffee.price.toFixed(2)}</Text>
-          <TouchableOpacity style={styles.addButton} onPress={onPress}>
+          <View style={styles.addButton}>
             <Text style={styles.addButtonText}>+</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

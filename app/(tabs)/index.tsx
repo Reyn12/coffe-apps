@@ -3,10 +3,12 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { CoffeeCard } from '@/components/CoffeeCard';
 import { coffeeData } from '@/data/coffeeData';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState('All Coffee');
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,7 +56,7 @@ export default function HomeScreen() {
 
           <View style={styles.promoContainer}>
             <Image 
-              source={require('@/assets/images/bannerPromo.png')}
+              source={require('@/assets/images/bannerPromo2.png')}
               style={styles.promoImage}
               resizeMode="cover"
             />
@@ -111,48 +113,30 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        <View style={styles.coffeeGrid}>
-          {(() => {
-            // Filter berdasarkan search query dan kategori
-            let filteredCoffee = coffeeData;
-            
-            // Filter berdasarkan search query
-            if (searchQuery) {
-              filteredCoffee = filteredCoffee.filter(coffee => 
+        {activeCategory !== 'All Coffee' && 
+         !coffeeData.some(coffee => coffee.category === activeCategory) ? (
+          <View style={styles.noContentContainer}>
+            <Text style={styles.noContentTitle}>Coffee {activeCategory}</Text>
+            <Text style={styles.noContentText}>Belum Tersedia...!!</Text>
+          </View>
+        ) : (
+          <View style={styles.coffeeGrid}>
+            {coffeeData
+              .filter(coffee => 
+                activeCategory === 'All Coffee' || coffee.category === activeCategory)
+              .filter(coffee =>
+                searchQuery === '' || 
                 coffee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                coffee.description.toLowerCase().includes(searchQuery.toLowerCase())
-              );
-            }
-            
-            // Filter berdasarkan kategori
-            if (activeCategory !== 'All Coffee') {
-              filteredCoffee = filteredCoffee.filter(coffee => 
-                coffee.category === activeCategory
-              );
-            }
-            
-            if (filteredCoffee.length === 0) {
-              return (
-                <View style={styles.emptyStateContainer}>
-                  <Text style={styles.emptyStateTitle}>
-                    {searchQuery ? `Tidak ada hasil untuk "${searchQuery}"` : `Produk ${activeCategory}`}
-                  </Text>
-                  <Text style={styles.emptyStateText}>
-                    {searchQuery ? 'Coba kata kunci lain' : 'Belum Ditemukan..!!'}
-                  </Text>
-                </View>
-              );
-            }
-            
-            return filteredCoffee.map((coffee) => (
-              <CoffeeCard 
-                key={coffee.id}
-                coffee={coffee}
-                onPress={() => console.log('Add to cart:', coffee.name)}
-              />
-            ));
-          })()}
-        </View>
+                coffee.description.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((coffee) => (
+                <CoffeeCard
+                  key={coffee.id}
+                  coffee={coffee}
+                  onPress={() => router.push(`/(pages)/productDetail?id=${coffee.id}`)}
+                />
+              ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -281,19 +265,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 24,
   },
-  emptyStateContainer: {
-    width: '100%',
+  noContentContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 40,
   },
-  emptyStateTitle: {
-    fontSize: 18,
+  noContentTitle: {
+    marginTop: 80,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#2F2D2C',
     marginBottom: 8,
   },
-  emptyStateText: {
+  noContentText: {
     fontSize: 16,
     color: '#9B9B9B',
   },
