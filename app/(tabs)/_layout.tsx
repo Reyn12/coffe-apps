@@ -1,30 +1,12 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, View, Keyboard } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform, View } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 
 export default function TabLayout() {
-  const insets = useSafeAreaInsets();
-  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardVisible(true);
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardVisible(false);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
-
   return (
     <>
       <Tabs
@@ -43,26 +25,38 @@ export default function TabLayout() {
             paddingHorizontal: 20,
             paddingTop: 10,
           },
-          tabBarStyle: {
-            display: keyboardVisible ? 'none' : 'flex',
-            position: 'absolute',
-            bottom: Platform.OS === 'ios' ? insets.bottom + 20 : 20,
-            left: 20,
-            right: 20,
-            marginHorizontal: 80,
-            elevation: Platform.OS === 'android' ? 4 : 0,
-            backgroundColor: '#FFFFFF',
-            borderRadius: 15,
-            height: Platform.OS === 'android' ? 70 : 60,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowOffset: {
-              width: 0,
-              height: 2,
+          tabBarStyle: Platform.select({
+            ios: {
+              position: 'absolute',
+              bottom: 20,
+              left: 20,
+              right: 20,
+              marginHorizontal: 80,
+              elevation: 0,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 15,
+              height: 60,
+              shadowColor: '#000',
+              shadowOpacity: 0.1,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowRadius: 4,
             },
-            shadowRadius: 4,
-            zIndex: 1000,
-          },
+            android: {
+              position: 'absolute',
+              bottom: 20,
+              left: 20,
+              right: 20,
+              marginHorizontal: 80,
+              elevation: 4,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 15,
+              height: 70,
+              transform: [{ translateY: 0 }],
+            },
+          }),
         }}>
         <Tabs.Screen
           name="index"

@@ -1,50 +1,163 @@
-# Welcome to your Expo app 👋
+# ☕ React Native Coffee Shop App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Coffee Shop Banner](./assets/images/bannerPromo.png)
 
-## Get started
+## 🚀 Fitur Utama
 
-1. Install dependencies
+- 🏠 Home Screen dengan Dynamic Search & Filtering
+- 🔍 Pencarian Real-time dengan Clear Button
+- 📱 Custom Tab Navigation
+- 🎨 Modern UI Design
+- 📦 Dynamic Product Cards
+- 🔄 Category Filtering
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Tech Stack
 
-2. Start the app
+- **Framework:** React Native + Expo Router
+- **UI Components:** Custom Components
+- **Icons:** MaterialIcons
+- **State Management:** React Hooks
+- **Navigation:** Tab-based Navigation
 
-   ```bash
-    npx expo start
-   ```
+## 📝 Step-by-Step Implementation
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+### 1. Setup Project & Dependencies
 ```bash
-npm run reset-project
+# Create new project with Expo Router
+npx create-expo-app@latest --example tabs tabs-navigation
+
+# Install dependencies
+cd tabs-navigation
+npm install react-native-safe-area-context
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Struktur Folder
+```
+tabs-navigation/
+├── app/
+│   └── (tabs)/
+│       ├── index.tsx        # Home Screen
+│       ├── _layout.tsx      # Tab Navigation Layout
+│       ├── cart.tsx         # Cart Screen
+│       └── favorite.tsx     # Favorites Screen
+├── components/
+│   ├── CoffeeCard.tsx      # Product Card Component
+│   ├── HapticTab.tsx       # Custom Tab Component
+│   └── ui/
+│       ├── IconSymbol.tsx  # Icon Component
+│       └── TabBarBackground.tsx
+├── data/
+│   └── coffeeData.ts       # Product Data
+└── assets/
+    └── images/            # App Images
+```
 
-## Learn more
+### 3. Implementasi Fitur
 
-To learn more about developing your project with Expo, look at the following resources:
+#### 🏠 Home Screen (index.tsx)
+- Location Selector
+- Search Bar dengan Clear Button
+- Promo Banner
+- Category Scrolling
+- Dynamic Product Grid
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+#### 🎯 Tab Navigation (_layout.tsx)
+- Custom Tab Bar Design
+- Platform-specific Styling (Android/iOS)
+- Icon Integration
+- Smooth Transitions
 
-## Join the community
+#### 🔍 Search Functionality
+- Real-time Search
+- Clear Button Integration
+- Category Filtering
+- Empty State Handling
 
-Join our community of developers creating universal apps.
+## 🎨 UI Components
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 1. Search Bar
+```typescript
+<View style={styles.searchBar}>
+  <IconSymbol name="magnifyingglass" size={20} color="#989898" />
+  <TextInput
+    style={styles.searchInput}
+    placeholder="Search Coffee"
+    value={searchQuery}
+    onChangeText={setSearchQuery}
+  />
+  {searchQuery.length > 0 && (
+    <TouchableOpacity onPress={() => setSearchQuery('')}>
+      <Text style={{ color: '#989898', fontSize: 15 }}>X</Text>
+    </TouchableOpacity>
+  )}
+</View>
+```
+
+### 2. Custom Tab Bar
+```typescript
+<Tabs
+  screenOptions={{
+    tabBarStyle: Platform.select({
+      android: {
+        position: 'absolute',
+        bottom: 20,
+        marginHorizontal: 80,
+        borderRadius: 15,
+        height: 70,
+        elevation: 4,
+      }
+    })
+  }}
+>
+```
+
+## 🎯 State Management
+
+```typescript
+// Active Category State
+const [activeCategory, setActiveCategory] = useState('All Coffee');
+
+// Search Query State
+const [searchQuery, setSearchQuery] = useState('');
+
+// Filtered Products
+const filteredCoffee = coffeeData.filter(coffee => 
+  coffee.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
+```
+
+## 🚀 Running the App
+
+```bash
+# Development
+npm start
+
+# Clear Cache & Run
+npx react-native start --reset-cache
+
+# Android
+npm run android
+
+# iOS
+npm run ios
+```
+
+## 📱 Screenshots
+
+[Screenshots akan ditambahkan di sini]
+
+## 🤝 Contributing
+
+Feel free to contribute to this project:
+1. Fork it
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+Made with ❤️ using React Native & Expo Router
