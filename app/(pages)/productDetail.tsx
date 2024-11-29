@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { coffeeData } from '@/data/coffeeData';
 import { Ionicons } from '@expo/vector-icons';
@@ -75,79 +75,85 @@ export default function ProductDetail() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
-        <Image 
-          source={coffee.image}
-          style={styles.coffeeImage}
-          resizeMode="cover"
-        />
-        <View style={styles.detailsContainer}>
-          <Text style={styles.coffeeName}>{coffee.name}</Text>
-          <View style={styles.descriptionRow}>
-            <Text style={styles.coffeeDesc}>{coffee.description}</Text>
-            <View style={styles.iconContainer}>
-              <View style={styles.iconWrapper}>
-                <Ionicons name="water" size={24} color="#C67C4E" />
-              </View>
-              <View style={styles.iconWrapper}>
-                <Ionicons name="bicycle" size={24} color="#C67C4E" />
-              </View>
-              <View style={styles.iconWrapper}>
-                <Ionicons name="shield-checkmark" size={24} color="#C67C4E" />
+      <ScrollView 
+        style={styles.scrollContainer} 
+        contentContainerStyle={styles.scrollContentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.content}>
+          <Image 
+            source={coffee.image}
+            style={styles.coffeeImage}
+            resizeMode="cover"
+          />
+          <View style={styles.detailsContainer}>
+            <Text style={styles.coffeeName}>{coffee.name}</Text>
+            <View style={styles.descriptionRow}>
+              <Text style={styles.coffeeDesc}>{coffee.description}</Text>
+              <View style={styles.iconContainer}>
+                <View style={styles.iconWrapper}>
+                  <Ionicons name="water" size={24} color="#C67C4E" />
+                </View>
+                <View style={styles.iconWrapper}>
+                  <Ionicons name="bicycle" size={24} color="#C67C4E" />
+                </View>
+                <View style={styles.iconWrapper}>
+                  <Ionicons name="shield-checkmark" size={24} color="#C67C4E" />
+                </View>
               </View>
             </View>
-          </View>
-          <View style={styles.ratingContainer}>
-            <Ionicons name="star" size={20} color="#FBBE21" />
-            <Text style={styles.ratingText}>
-              <Text style={styles.ratingBold}>{coffee.rating}</Text> ({coffee.soldCount})
-            </Text>
-          </View>
-          <View style={styles.divider} />
-          
-          <View style={styles.descriptionSection}>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.longDescription}>
-              {isFullDescription 
-                ? coffee.longDescription 
-                : getTruncatedDescription(coffee.longDescription || '')}
-            </Text>
-            {coffee.longDescription && coffee.longDescription.split(' ').length > 15 && (
-              <TouchableOpacity 
-                onPress={() => setIsFullDescription(!isFullDescription)}
-                style={styles.readMoreButton}
-              >
-                <Text style={styles.readMoreText}>
-                  {isFullDescription ? 'SHOW LESS' : '...READ MORE'}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
+            <View style={styles.ratingContainer}>
+              <Ionicons name="star" size={20} color="#FBBE21" />
+              <Text style={styles.ratingText}>
+                <Text style={styles.ratingBold}>{coffee.rating}</Text> ({coffee.soldCount})
+              </Text>
+            </View>
+            <View style={styles.divider} />
+            
+            <View style={styles.descriptionSection}>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <Text style={styles.longDescription}>
+                {isFullDescription 
+                  ? coffee.longDescription 
+                  : getTruncatedDescription(coffee.longDescription || '')}
+              </Text>
+              {coffee.longDescription && coffee.longDescription.split(' ').length > 15 && (
+                <TouchableOpacity 
+                  onPress={() => setIsFullDescription(!isFullDescription)}
+                  style={styles.readMoreButton}
+                >
+                  <Text style={styles.readMoreText}>
+                    {isFullDescription ? 'SHOW LESS' : '...READ MORE'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
 
-          <View style={styles.sizeSection}>
-            <Text style={styles.sectionTitle}>Size</Text>
-            <View style={styles.sizeContainer}>
-              {sizeOptions.map(option => (
-                <SizeCard 
-                  key={option.key} 
-                  size={option.key as 'S' | 'M' | 'L'} 
-                  label={option.label} 
-                />
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.priceSection}>
-            <View style={styles.priceCard}>
-              <View style={styles.priceContainer}>
-                <Text style={styles.priceLabel}>Price</Text>
-                <Text style={styles.priceValue}>$ {coffee.price.toFixed(2)}</Text>
+            <View style={styles.sizeSection}>
+              <Text style={styles.sectionTitle}>Size</Text>
+              <View style={styles.sizeContainer}>
+                {sizeOptions.map(option => (
+                  <SizeCard 
+                    key={option.key} 
+                    size={option.key as 'S' | 'M' | 'L'} 
+                    label={option.label} 
+                  />
+                ))}
               </View>
-              <TouchableOpacity style={styles.buyNowButton}>
-                <Text style={styles.buyNowText}>Buy Now</Text>
-              </TouchableOpacity>
             </View>
           </View>
+        </View>
+      </ScrollView>
+
+      <View style={styles.priceSection}>
+        <View style={styles.priceCard}>
+          <View style={styles.priceContainer}>
+            <Text style={styles.priceLabel}>Price</Text>
+            <Text style={styles.priceValue}>$ {coffee.price.toFixed(2)}</Text>
+          </View>
+          <TouchableOpacity style={styles.buyNowButton}>
+            <Text style={styles.buyNowText}>Buy Now</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -158,6 +164,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContentContainer: {
+    paddingBottom: 100, // Add padding to bottom to ensure content is fully scrollable
   },
   header: {
     flexDirection: 'row',
@@ -195,7 +207,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 16,
   },
   coffeeImage: {
     width: '100%',
@@ -267,11 +279,10 @@ const styles = StyleSheet.create({
   longDescription: {
     fontSize: 14,
     color: '#9B9B9B',
-    lineHeight: 22,
-    marginBottom: 8,
+    lineHeight: 20,
   },
   readMoreButton: {
-    alignSelf: 'flex-start',
+    marginTop: 8,
   },
   readMoreText: {
     color: '#C67C4E',
@@ -318,29 +329,23 @@ const styles = StyleSheet.create({
     color: '#C67C4E',
   },
   priceSection: {
-    marginTop: 16,
-    marginHorizontal: -30,
-    marginBottom: -16,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   priceCard: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    width: '100%',
-    minHeight: 100,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   priceContainer: {
     flexDirection: 'column',

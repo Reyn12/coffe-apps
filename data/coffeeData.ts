@@ -70,7 +70,7 @@ export const coffeeData: Coffee[] = [
     id: '6',
     name: 'Macchiato',
     description: 'Marked with Foam',
-    longDescription: '',
+    longDescription: 'Macchiato is a coffee drink made by adding steamed milk to a shot of espresso, creating a creamy and velvety coffee with a smooth, airy foam that adds a unique texture to the drink.',
     price: 4.53,
     rating: 4.8,
     soldCount: 0,
