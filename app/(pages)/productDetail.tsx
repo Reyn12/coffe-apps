@@ -8,6 +8,8 @@ export default function ProductDetail() {
   const params = useLocalSearchParams();
   const router = useRouter();
   const [isFullDescription, setIsFullDescription] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<'S' | 'M' | 'L'>('M');
   
   const coffee = coffeeData.find(c => c.id.toString() === params.id);
 
@@ -27,6 +29,29 @@ export default function ProductDetail() {
     return truncatedWords.join(' ') + (words.length > truncatedWords.length ? '...' : '');
   };
 
+  const sizeOptions = [
+    { key: 'S', label: 'Small' },
+    { key: 'M', label: 'Medium' },
+    { key: 'L', label: 'Large' }
+  ];
+
+  const SizeCard = ({ size, label }: { size: 'S' | 'M' | 'L', label: string }) => (
+    <TouchableOpacity 
+      style={[
+        styles.sizeCard, 
+        selectedSize === size && styles.selectedSizeCard
+      ]}
+      onPress={() => setSelectedSize(size)}
+    >
+      <Text style={[
+        styles.sizeCardText, 
+        selectedSize === size && styles.selectedSizeCardText
+      ]}>
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
@@ -38,8 +63,15 @@ export default function ProductDetail() {
           <Ionicons name="chevron-back" size={24} color="#2F2D2C" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Detail</Text>
-        <TouchableOpacity style={styles.favoriteButton}>
-          <Ionicons name="heart-outline" size={24} color="#2F2D2C" />
+        <TouchableOpacity 
+          style={styles.favoriteButton}
+          onPress={() => setIsFavorite(!isFavorite)}
+        >
+          <Ionicons 
+            name={isFavorite ? "heart" : "heart-outline"} 
+            size={24} 
+            color={isFavorite ? "#C67C4E" : "#2F2D2C"} 
+          />
         </TouchableOpacity>
       </View>
 
@@ -91,6 +123,31 @@ export default function ProductDetail() {
               </TouchableOpacity>
             )}
           </View>
+
+          <View style={styles.sizeSection}>
+            <Text style={styles.sectionTitle}>Size</Text>
+            <View style={styles.sizeContainer}>
+              {sizeOptions.map(option => (
+                <SizeCard 
+                  key={option.key} 
+                  size={option.key as 'S' | 'M' | 'L'} 
+                  label={option.label} 
+                />
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.priceSection}>
+            <View style={styles.priceCard}>
+              <View style={styles.priceContainer}>
+                <Text style={styles.priceLabel}>Price</Text>
+                <Text style={styles.priceValue}>$ {coffee.price.toFixed(2)}</Text>
+              </View>
+              <TouchableOpacity style={styles.buyNowButton}>
+                <Text style={styles.buyNowText}>Buy Now</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -107,8 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
+    paddingTop: 70,
+    paddingBottom: 10,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#F4F4F4',
@@ -220,5 +277,107 @@ const styles = StyleSheet.create({
     color: '#C67C4E',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  sizeSection: {
+    marginTop: 8,
+  },
+  sizeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 3,
+  },
+  sizeCard: {
+    flex: 1,
+    marginHorizontal: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#EAEAEA',
+    borderRadius: 12,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  selectedSizeCard: {
+    borderColor: '#C67C4E',
+    elevation: 4, // Slightly higher elevation when selected
+  },
+  sizeCardText: {
+    color: '#2F2D2C',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  selectedSizeCardText: {
+    color: '#C67C4E',
+  },
+  priceSection: {
+    marginTop: 16,
+    marginHorizontal: -30,
+    marginBottom: -16,
+  },
+  priceCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    width: '100%',
+    minHeight: 100,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  priceContainer: {
+    flexDirection: 'column',
+    marginLeft:20,
+  },
+  priceLabel: {
+    fontSize: 14,
+    color: '#9B9B9B',
+    marginBottom: 4,
+  },
+  priceValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2F2D2C',
+  },
+  buyNowButton: {
+    backgroundColor: '#C67C4E',
+    paddingHorizontal: 48,
+    paddingVertical: 16,
+    borderRadius: 16,
+    flex: 1,
+    marginLeft: 70,
+    alignItems: 'center',
+    height: 60,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buyNowText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
