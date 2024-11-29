@@ -17,12 +17,29 @@ const COLORS = {
   searchBarBackground: '#2A2A2A',
   iconColor: '#C67C4E',
   borderColor: '#F4F4F4',
+  categoryActiveBackground: '#C67C4E',
+  categoryActiveText: '#FFFFFF',
+  categoryInactiveBackground: '#F4F4F4',
+  categoryInactiveText: '#2F2D2C',
 };
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState('All Coffee');
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
+
+  const categories = [
+    'All Coffee', 
+    'Machiatto', 
+    'Latte', 
+    'Espresso',
+    'Americano',
+    'Thai Tea'
+  ];
+
+  const filteredCoffeeData = activeCategory === 'All Coffee' 
+    ? coffeeData 
+    : coffeeData.filter(coffee => coffee.category === activeCategory);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,60 +103,36 @@ export default function HomeScreen() {
             style={styles.categoryScroll}
             contentContainerStyle={styles.categoryContent}
           >
-            <TouchableOpacity 
-              style={[styles.categoryItem, activeCategory === 'All Coffee' && styles.categoryItemActive]}
-              onPress={() => setActiveCategory('All Coffee')}
-            >
-              <Text style={[styles.categoryText, activeCategory === 'All Coffee' && styles.categoryTextActive]}>
-                All Coffee
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.categoryItem, activeCategory === 'Machiatto' && styles.categoryItemActive]}
-              onPress={() => setActiveCategory('Machiatto')}
-            >
-              <Text style={[styles.categoryText, activeCategory === 'Machiatto' && styles.categoryTextActive]}>
-                Machiatto
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.categoryItem, activeCategory === 'Latte' && styles.categoryItemActive]}
-              onPress={() => setActiveCategory('Latte')}
-            >
-              <Text style={[styles.categoryText, activeCategory === 'Latte' && styles.categoryTextActive]}>
-                Latte
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.categoryItem, activeCategory === 'Americano' && styles.categoryItemActive]}
-              onPress={() => setActiveCategory('Americano')}
-            >
-              <Text style={[styles.categoryText, activeCategory === 'Americano' && styles.categoryTextActive]}>
-                Americano
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.categoryItem, activeCategory === 'Thai Tea' && styles.categoryItemActive]}
-              onPress={() => setActiveCategory('Thai Tea')}
-            >
-              <Text style={[styles.categoryText, activeCategory === 'Thai Tea' && styles.categoryTextActive]}>
-                Thai Tea
-              </Text>
-            </TouchableOpacity>
+            {categories.map((category) => (
+              <TouchableOpacity 
+                key={category}
+                style={[
+                  styles.categoryItem, 
+                  activeCategory === category && styles.categoryItemActive
+                ]}
+                onPress={() => setActiveCategory(category)}
+              >
+                <Text 
+                  style={[
+                    styles.categoryText, 
+                    activeCategory === category && styles.categoryTextActive
+                  ]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </ScrollView>
         </View>
 
-        {activeCategory !== 'All Coffee' && 
-         !coffeeData.some(coffee => coffee.category === activeCategory) ? (
+        {activeCategory === 'Americano' || activeCategory === 'Thai Tea' ? (
           <View style={styles.noContentContainer}>
             <Text style={styles.noContentTitle}>Coffee {activeCategory}</Text>
             <Text style={styles.noContentText}>Belum Tersedia...!!</Text>
           </View>
         ) : (
           <View style={styles.coffeeGrid}>
-            {coffeeData
-              .filter(coffee => 
-                activeCategory === 'All Coffee' || coffee.category === activeCategory)
+            {filteredCoffeeData
               .filter(coffee =>
                 searchQuery === '' || 
                 coffee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -254,21 +247,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginRight: 10,
     borderRadius: 12,
+    backgroundColor: COLORS.categoryInactiveBackground,
   },
   categoryItemActive: {
     paddingHorizontal: 16,
     paddingVertical: 10,
     marginRight: 10,
     borderRadius: 12,
-    backgroundColor: COLORS.iconColor,
+    backgroundColor: COLORS.categoryActiveBackground,
   },
   categoryText: {
-    color: COLORS.text,
+    color: COLORS.categoryInactiveText,
     fontSize: 14,
-    opacity: 0.8,
   },
   categoryTextActive: {
-    color: COLORS.background,
+    color: COLORS.categoryActiveText,
     fontSize: 14,
     fontWeight: 'bold',
   },
