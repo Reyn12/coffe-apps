@@ -1,6 +1,6 @@
 # ☕ React Native Coffee Shop App
 
-![Coffee Shop Banner](./assets/images/bannerPromo.png)
+![Coffee Shop Banner](./assets/images/homePage.png)
 
 ## 🚀 Fitur Utama
 
