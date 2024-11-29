@@ -1,9 +1,23 @@
-import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, StatusBar, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, StatusBar, TextInput, Dimensions } from 'react-native';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { CoffeeCard } from '@/components/CoffeeCard';
 import { coffeeData } from '@/data/coffeeData';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'expo-router';
+
+const { width: screenWidth } = Dimensions.get('window');
+
+// Definisi warna
+const COLORS = {
+  background: '#FFFFFF',
+  cardBackground: '#1A1A1A',
+  text: '#FFFFFF',
+  textPrimary: '#2F2D2C',
+  textSecondary: '#989898',
+  searchBarBackground: '#2A2A2A',
+  iconColor: '#C67C4E',
+  borderColor: '#F4F4F4',
+};
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState('All Coffee');
@@ -33,11 +47,11 @@ export default function HomeScreen() {
 
           <View style={styles.searchContainer}>
             <View style={styles.searchBar}>
-              <IconSymbol name="magnifyingglass" size={20} color="#989898" />
+              <IconSymbol name="magnifyingglass" size={20} color={COLORS.textSecondary} />
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search Coffee"
-                placeholderTextColor="#989898"
+                placeholderTextColor={COLORS.textSecondary}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
               />
@@ -45,7 +59,7 @@ export default function HomeScreen() {
                 <TouchableOpacity 
                   onPress={() => setSearchQuery('')}
                 >
-                  <Text style={{ color: '#989898', fontSize: 15, marginRight: 5 }}>X</Text>
+                  <Text style={{ color: COLORS.textSecondary, fontSize: 15, marginRight: 5 }}>X</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -55,11 +69,13 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.promoContainer}>
-            <Image 
-              source={require('@/assets/images/bannerPromo2.png')}
-              style={styles.promoImage}
-              resizeMode="cover"
-            />
+            <TouchableOpacity onPress={() => console.log('Promo banner pressed')}>
+              <Image 
+                source={require('@/assets/images/bannerPromo2.png')}
+                style={styles.promoImage}
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -145,7 +161,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
   },
   scrollView: {
     flex: 1,
@@ -153,7 +169,7 @@ const styles = StyleSheet.create({
   card: {
     height: 320,
     width: '100%',
-    backgroundColor: '#1A1A1A',
+    backgroundColor: COLORS.cardBackground,
     padding: 16,
     position: 'relative',
   },
@@ -163,7 +179,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   locationLabel: {
-    color: '#FFFFFF',
+    color: COLORS.text,
     opacity: 0.7,
     fontSize: 14,
     marginBottom: 4,
@@ -173,23 +189,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   locationText: {
-    color: '#FFFFFF',
+    color: COLORS.text,
     fontSize: 16,
     fontWeight: 'bold',
     marginRight: 4,
   },
   dropdownIcon: {
-    color: '#FFFFFF',
+    color: COLORS.text,
     fontSize: 12,
   },
   searchContainer: {
     marginTop: 40,
     marginLeft: 12,
+    marginBottom:15,
     flexDirection: 'row',
     alignItems: 'center',
   },
   searchBar: {
-    backgroundColor: '#2A2A2A',
+    backgroundColor: COLORS.searchBarBackground,
     borderRadius: 15,
     height: 55,
     flexDirection: 'row',
@@ -200,12 +217,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    color: '#FFFFFF',
+    color: COLORS.text,
     marginLeft: 10,
     fontSize: 14,
   },
   filterButton: {
-    backgroundColor: '#C67C4E',
+    backgroundColor: COLORS.iconColor,
     width: 55,
     height: 55,
     borderRadius: 15,
@@ -213,16 +230,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   promoContainer: {
-    position: 'absolute',
-    bottom: -80,
-    left: 16,
-    right: 16,
-    height: 160,
+    marginTop: 20,
+    width: '100%',
+    alignItems: 'center',
   },
   promoImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 15,
+    width: screenWidth - 32,
+    height: 150,
+    borderRadius: 16,
   },
   categoryContainer: {
     marginLeft: 16,
@@ -245,15 +260,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginRight: 10,
     borderRadius: 12,
-    backgroundColor: '#C67C4E',
+    backgroundColor: COLORS.iconColor,
   },
   categoryText: {
-    color: '#1A1A1A',
+    color: COLORS.text,
     fontSize: 14,
     opacity: 0.8,
   },
   categoryTextActive: {
-    color: '#FFFFFF',
+    color: COLORS.background,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -275,11 +290,11 @@ const styles = StyleSheet.create({
     marginTop: 80,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2F2D2C',
+    color: COLORS.textPrimary,
     marginBottom: 8,
   },
   noContentText: {
     fontSize: 16,
-    color: '#9B9B9B',
+    color: COLORS.textSecondary,
   },
 });

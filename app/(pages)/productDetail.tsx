@@ -4,6 +4,18 @@ import { coffeeData } from '@/data/coffeeData';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 
+// Definisi warna
+const COLORS = {
+  background: '#FFFFFF',
+  text: '#2F2D2C',
+  textSecondary: '#9B9B9B',
+  iconPrimary: '#C67C4E',
+  iconSecondary: '#2F2D2C',
+  border: '#F4F4F4',
+  star: '#FBBE21',
+  white: '#FFFFFF',
+};
+
 export default function ProductDetail() {
   const params = useLocalSearchParams();
   const router = useRouter();
@@ -16,7 +28,7 @@ export default function ProductDetail() {
   if (!coffee) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+        <StatusBar backgroundColor={COLORS.background} barStyle="dark-content" />
         <Text>Product not found</Text>
       </SafeAreaView>
     );
@@ -54,13 +66,13 @@ export default function ProductDetail() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
+      <StatusBar backgroundColor={COLORS.background} barStyle="dark-content" />
       <View style={styles.header}>
         <TouchableOpacity 
           onPress={() => router.push('/(tabs)')} 
           style={styles.backButton}
         >
-          <Ionicons name="chevron-back" size={24} color="#2F2D2C" />
+          <Ionicons name="chevron-back" size={24} color={COLORS.iconSecondary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Detail</Text>
         <TouchableOpacity 
@@ -70,7 +82,7 @@ export default function ProductDetail() {
           <Ionicons 
             name={isFavorite ? "heart" : "heart-outline"} 
             size={24} 
-            color={isFavorite ? "#C67C4E" : "#2F2D2C"} 
+            color={isFavorite ? COLORS.iconPrimary : COLORS.iconSecondary} 
           />
         </TouchableOpacity>
       </View>
@@ -92,18 +104,18 @@ export default function ProductDetail() {
               <Text style={styles.coffeeDesc}>{coffee.description}</Text>
               <View style={styles.iconContainer}>
                 <View style={styles.iconWrapper}>
-                  <Ionicons name="water" size={24} color="#C67C4E" />
+                  <Ionicons name="water" size={24} color={COLORS.iconPrimary} />
                 </View>
                 <View style={styles.iconWrapper}>
-                  <Ionicons name="bicycle" size={24} color="#C67C4E" />
+                  <Ionicons name="bicycle" size={24} color={COLORS.iconPrimary} />
                 </View>
                 <View style={styles.iconWrapper}>
-                  <Ionicons name="shield-checkmark" size={24} color="#C67C4E" />
+                  <Ionicons name="shield-checkmark" size={24} color={COLORS.iconPrimary} />
                 </View>
               </View>
             </View>
             <View style={styles.ratingContainer}>
-              <Ionicons name="star" size={20} color="#FBBE21" />
+              <Ionicons name="star" size={20} color={COLORS.star} />
               <Text style={styles.ratingText}>
                 <Text style={styles.ratingBold}>{coffee.rating}</Text> ({coffee.soldCount})
               </Text>
@@ -163,7 +175,7 @@ export default function ProductDetail() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
   },
   scrollContainer: {
     flex: 1,
@@ -178,13 +190,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 70,
     paddingBottom: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
     borderBottomWidth: 1,
-    borderBottomColor: '#F4F4F4',
+    borderBottomColor: COLORS.border,
   },
   backButton: {
     padding: 8,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.border,
     borderRadius: 8,
     width: 40,
     height: 40,
@@ -194,11 +206,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#2F2D2C',
+    color: COLORS.text,
   },
   favoriteButton: {
     padding: 8,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.border,
     borderRadius: 8,
     width: 40,
     height: 40,
@@ -211,10 +223,11 @@ const styles = StyleSheet.create({
   },
   coffeeImage: {
     width: '100%',
+    marginTop: 10,
     height: 250,
     borderRadius: 16,
     marginBottom: 10,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.border,
   },
   detailsContainer: {
     padding: 16,
@@ -222,7 +235,7 @@ const styles = StyleSheet.create({
   coffeeName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#2F2D2C',
+    color: COLORS.text,
     marginBottom: 2,
   },
   descriptionRow: {
@@ -233,7 +246,7 @@ const styles = StyleSheet.create({
   },
   coffeeDesc: {
     fontSize: 14,
-    color: '#9B9B9B',
+    color: COLORS.textSecondary,
     flex: 1,
   },
   iconContainer: {
@@ -241,7 +254,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   iconWrapper: {
-    backgroundColor: '#F4F4F4',
+    backgroundColor: COLORS.border,
     borderRadius: 8,
     padding: 8,
     width: 40,
@@ -256,7 +269,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 16,
-    color: '#2F2D2C',
+    color: COLORS.text,
     marginLeft: 8,
   },
   ratingBold: {
@@ -264,7 +277,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 3,
-    backgroundColor: '#EAEAEA',
+    backgroundColor: COLORS.border,
     marginVertical: 16,
   },
   descriptionSection: {
@@ -273,19 +286,19 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#2F2D2C',
+    color: COLORS.text,
     marginBottom: 8,
   },
   longDescription: {
     fontSize: 14,
-    color: '#9B9B9B',
+    color: COLORS.textSecondary,
     lineHeight: 20,
   },
   readMoreButton: {
     marginTop: 8,
   },
   readMoreText: {
-    color: '#C67C4E',
+    color: COLORS.iconPrimary,
     fontWeight: 'bold',
     fontSize: 14,
   },
@@ -303,10 +316,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#EAEAEA',
+    borderColor: COLORS.border,
     borderRadius: 12,
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.background,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -317,23 +330,23 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   selectedSizeCard: {
-    borderColor: '#C67C4E',
+    borderColor: COLORS.iconPrimary,
     elevation: 4, // Slightly higher elevation when selected
   },
   sizeCardText: {
-    color: '#2F2D2C',
+    color: COLORS.text,
     fontSize: 14,
     fontWeight: '500',
   },
   selectedSizeCardText: {
-    color: '#C67C4E',
+    color: COLORS.iconPrimary,
   },
   priceSection: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.background,
     paddingVertical: 16,
     paddingHorizontal: 16,
     shadowColor: '#000',
@@ -353,16 +366,16 @@ const styles = StyleSheet.create({
   },
   priceLabel: {
     fontSize: 14,
-    color: '#9B9B9B',
+    color: COLORS.textSecondary,
     marginBottom: 4,
   },
   priceValue: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#2F2D2C',
+    color: COLORS.text,
   },
   buyNowButton: {
-    backgroundColor: '#C67C4E',
+    backgroundColor: COLORS.iconPrimary,
     paddingHorizontal: 48,
     paddingVertical: 16,
     borderRadius: 16,
@@ -381,7 +394,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buyNowText: {
-    color: '#FFFFFF',
+    color: COLORS.white,
     fontSize: 20,
     fontWeight: 'bold',
   },
